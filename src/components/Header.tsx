@@ -5,12 +5,10 @@ import { CartActions } from "../reducers/cart-reducer";
 type HeaderProps = {
   cart: CartItem[];
   dispatch:  Dispatch<CartActions>
-  increaseQuantity:(id: Guitar['id'])=> void;
-  decreaseQuantity:(id: Guitar['id'])=> void;
   clearCart : ()=> void;
 }
 
-const Header = ({cart, dispatch, increaseQuantity, decreaseQuantity, clearCart}: HeaderProps)  => {
+const Header = ({cart, dispatch, clearCart}: HeaderProps)  => {
 
         // State Derivado
   // si IsEmpty se pone como funcion sin uso de useMemo, donde se llame se debe poner isEmpty()
@@ -75,11 +73,11 @@ const Header = ({cart, dispatch, increaseQuantity, decreaseQuantity, clearCart}:
                               <td>{guitar.name}</td>
                               <td className="fw-bold">${guitar.price}</td>
                               <td className="flex align-items-start gap-4">
-                                <button type="button" className="btn btn-dark" onClick={()=>decreaseQuantity(guitar.id)}>
+                                <button type="button" className="btn btn-dark" onClick={()=>dispatch({type:'decrease-quantity', payload:{id: guitar.id}})}>
                                   -
                                 </button>
                                 {guitar.quantity}
-                                <button type="button" className="btn btn-dark" onClick={()=>increaseQuantity(guitar.id)}>
+                                <button type="button" className="btn btn-dark" onClick={()=>dispatch({type:'increase-quantity', payload: {id: guitar.id}})}>
                                   +
                                 </button>
                               </td>
