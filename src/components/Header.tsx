@@ -5,10 +5,9 @@ import { CartActions } from "../reducers/cart-reducer";
 type HeaderProps = {
   cart: CartItem[];
   dispatch:  Dispatch<CartActions>
-  clearCart : ()=> void;
 }
 
-const Header = ({cart, dispatch, clearCart}: HeaderProps)  => {
+const Header = ({cart, dispatch}: HeaderProps)  => {
 
         // State Derivado
   // si IsEmpty se pone como funcion sin uso de useMemo, donde se llame se debe poner isEmpty()
@@ -99,7 +98,7 @@ const Header = ({cart, dispatch, clearCart}: HeaderProps)  => {
                       Total pagar:{" "}
                       <span className="fw-bold">${cartTotal}</span>
                     </p>
-                    <button className="btn btn-dark w-100 mt-3 p-2" onClick={clearCart}>
+                    <button className="btn btn-dark w-100 mt-3 p-2" onClick={()=>dispatch({type:"clear-cart"})}>
                       Vaciar Carrito
                     </button>
                   </>
