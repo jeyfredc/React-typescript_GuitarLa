@@ -1,12 +1,12 @@
 import { db } from "../data/db";
 import { CartItem, Guitar } from "../types/types";
 
-export type CartActions = 
-{ type: 'add-to-cart', payload:{ item: Guitar} } |
-{ type: 'remove-from-cart', payload: {id:Guitar['id']}} |
-{ type: 'decrease-quantity', payload: {id:Guitar['id']}} |
-{ type: 'increase-quantity', payload: {id:Guitar['id']}} |
-{ type: 'clear-cart'} 
+export type CartActions =
+    { type: 'add-to-cart', payload: { item: Guitar } } |
+    { type: 'remove-from-cart', payload: { id: Guitar['id'] } } |
+    { type: 'decrease-quantity', payload: { id: Guitar['id'] } } |
+    { type: 'increase-quantity', payload: { id: Guitar['id'] } } |
+    { type: 'clear-cart' }
 
 export type CartState = {
     data: Guitar[]
@@ -14,7 +14,7 @@ export type CartState = {
 }
 
 
-export const initialState:CartState = {
+export const initialState: CartState = {
     data: db,
     cart: []
 }
@@ -22,52 +22,59 @@ export const initialState:CartState = {
 const MAX_ITEMS = 5
 const MIN_ITEMS = 1
 
+
+
 export const cartReducer = (
-    state:CartState = initialState,
+    state: CartState = initialState,
     action: CartActions
 ) => {
-    if(action.type==='add-to-cart'){
+
+
+
+    if (action.type === 'add-to-cart') {
 
         const itemExists = state.cart.find((guitar) => guitar.id === action.payload.item.id);
 
         let updatedCart: CartItem[] = []
-        if (itemExists ) {
+        if (itemExists) {
             updatedCart = state.cart.map(item => {
-                if(item.id === action.payload.item.id){
-                    if(item.quantity < MAX_ITEMS){
-                        return {...item, quantity:item.quantity + 1}
-                    }else{
+                if (item.id === action.payload.item.id) {
+                    if (item.quantity < MAX_ITEMS) {
+                        return { ...item, quantity: item.quantity + 1 }
+                    } else {
                         return item
                     }
-                }else{
+                } else {
                     return item
                 }
             })
         } else {
-          const newItem: CartItem = {...action.payload.item, quantity :1}
-          updatedCart = [...state.cart, newItem]
+            const newItem: CartItem = { ...action.payload.item, quantity: 1 }
+            updatedCart = [...state.cart, newItem]
         }
         return {
             ...state,
-            cart:updatedCart
+            cart: updatedCart
         }
     }
-    if(action.type==='remove-from-cart'){
+    if (action.type === 'remove-from-cart') {
+
+        const updatedCart = state.cart.filter((guitar) => guitar.id !== action.payload.id);        return {
+            ...state,
+            cart: updatedCart
+        }
+    }
+    if (action.type === 'decrease-quantity') {
         return {
             ...state
         }
     }
-    if(action.type==='decrease-quantity'){
+    if (action.type === 'increase-quantity') {
         return {
             ...state
         }
     }
-    if(action.type==='increase-quantity'){
-        return {
-            ...state
-        }
-    }
-    if(action.type==='clear-cart'){
+    if (action.type === 'clear-cart') {
         return {
             ...state
         }

@@ -1,16 +1,29 @@
+import { Dispatch, useMemo } from "react";
 import { CartItem, Guitar } from "../types/types";
+import { CartActions } from "../reducers/cart-reducer";
 
 type HeaderProps = {
   cart: CartItem[];
-  removeFromCart: (id: Guitar['id'])=> void;
+  dispatch:  Dispatch<CartActions>
   increaseQuantity:(id: Guitar['id'])=> void;
   decreaseQuantity:(id: Guitar['id'])=> void;
   clearCart : ()=> void;
-  isEmpty: boolean;
-  cartTotal:number;
 }
 
-const Header = ({cart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, isEmpty, cartTotal}: HeaderProps)  => {
+const Header = ({cart, dispatch, increaseQuantity, decreaseQuantity, clearCart}: HeaderProps)  => {
+
+        // State Derivado
+  // si IsEmpty se pone como funcion sin uso de useMemo, donde se llame se debe poner isEmpty()
+  // si se pone useMemo solo se agrega isEmpty, esto lo que cambia es parecido a un useEffect, 
+  //solo se ejecuta cada vez que haya un cambio en cart
+  const isEmpty = useMemo(() => cart.length === 0, [cart]);
+  /* La diferencia entre las dos funciones es que isEmpty es implicita y por lo tanto devuelve verdadero o falso
+     pero cartTotal es una funcion explicita y por lo tanto es necesario devolver el valor con un return o de locontrario 
+     arrojara undefined
+    */
+  const cartTotal = useMemo(() => {
+    return cart.reduce((total, item) => total + item.quantity * item.price, 0);
+  },[cart]);
 
   return (
     <header className="py-5 header">
@@ -74,7 +87,7 @@ const Header = ({cart, removeFromCart, increaseQuantity, decreaseQuantity, clear
                                 <button
                                   className="btn btn-danger"
                                   type="button"
-                                  onClick={()=>removeFromCart(guitar.id)}
+                                  onClick={()=>dispatch({type:'remove-from-cart', payload: {id: guitar.id}})}
                                 >
                                   X
                                 </button>
