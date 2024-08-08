@@ -1,6 +1,6 @@
-# Projecto creado en React con Vite
+# Proyecto creado en React con Vite
 
-Projecto de tienda de guitarras con carrito de compras para calcular precio, añadir items, actualizar cantidades, etc.
+Proyecto de tienda de guitarras con carrito de compras para calcular precio, añadir items, actualizar cantidades, etc.
 
 Uso de UseState, UseEffect, UseMemo, guardar en localStorage y TypeScript
 
